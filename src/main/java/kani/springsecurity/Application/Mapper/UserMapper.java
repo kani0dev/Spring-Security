@@ -1,5 +1,6 @@
 package kani.springsecurity.Application.Mapper;
 
+import jakarta.persistence.GeneratedValue;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
 import kani.springsecurity.Application.Controller.Response.UserResponse;
 import kani.springsecurity.Domain.Users.Model.Users;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class UserMapper{
     public Users ToEntity(UserRequest requestT){
        return  Users.builder()
-                .username(requestT.username())
+               .username(requestT.username())
                 .password(requestT.password())
                 .build();
     }

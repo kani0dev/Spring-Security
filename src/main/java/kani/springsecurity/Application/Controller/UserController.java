@@ -8,6 +8,7 @@ import kani.springsecurity.Domain.Users.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,9 +37,12 @@ public class UserController {
         return ResponseEntity.ok(reponse);
     }
 
+
     @PostMapping("/")
-    public ResponseEntity<Void> postuser(@RequestBody  UserRequest users){
+    public ResponseEntity<Void> postuser(@RequestBody  UserRequest users) throws Exception {
+
         service.saveuser(mapper.ToEntity(users));
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
