@@ -22,6 +22,11 @@ public class Users implements UserDetails {
     private String username;
     private String password;
 
+    private String bio;
+    private String favorite_animal;
+    private String magic_place;
+    private Integer age;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

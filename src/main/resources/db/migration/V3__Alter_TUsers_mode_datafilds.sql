@@ -1,0 +1,5 @@
+ALTER TABLE users
+    ADD COLUMN bio VARCHAR(256),
+    ADD COLUMN favorite_animal VARCHAR(256),
+    ADD COLUMN magic_place VARCHAR(256),
+    ADD COLUMN age INTEGER;

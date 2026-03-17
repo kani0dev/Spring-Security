@@ -6,8 +6,10 @@ import kani.springsecurity.Application.Mapper.UserMapper;
 import kani.springsecurity.Domain.Users.Model.Users;
 import kani.springsecurity.Domain.Users.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +22,11 @@ public class UserController {
     private final UserService service;
     private final UserMapper mapper;
 
-    @GetMapping("/home")
-    public String fds(){
-        return "vai tomar no cu jadir";
+        @PostMapping("/201")
+        public ResponseEntity<String> authVerifier(){
+        String message = "if you seen this you are authorized";
+
+            return ResponseEntity.ok(message);
     }
 
     @GetMapping("/")
