@@ -1,6 +1,6 @@
 package kani.springsecurity.Domain.Users.Service;
 
-import kani.springsecurity.Application.Controller.Request.UserRequest;
+import jakarta.annotation.Nullable;
 import kani.springsecurity.Domain.Users.Model.Users;
 import kani.springsecurity.Domain.Users.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +24,15 @@ public class UserService implements UserDetailsService {
         return repo.findAll();
     }
 
-    public Users findById(Long id)throws Exception {
+    public Users findById(Long id)throws RuntimeException {
         Optional<Users> thisUsers = repo.findById(id);
         if (thisUsers.isPresent()){
             return thisUsers.get();
         }
-        throw new Exception();
+        throw  new RuntimeException("Id nao econtrado");
     }
 
-    public void saveuser(Users request) throws Exception {
+    public void saveuser(Users request){
         if(repo.findByUsername(request.getUsername()).isPresent()){
             throw new RuntimeException("Usuario Já cadastrado");
         }
@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername( String username) throws UsernameNotFoundException {
         Optional<UserDetails> byUsername = repo.findByUsername(username);
         if(byUsername.isPresent()){
             var user = byUsername.get();
@@ -56,4 +56,17 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public Users alterUser(Long id, Users request) throws RuntimeException {
+        try{
+            findById(id);
+            Users byId;
+            byId = request;
+            byId.setId(id);
+            byId.setPassword(encoder.encode(request.getPassword()));
+
+            return repo.save(byId);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

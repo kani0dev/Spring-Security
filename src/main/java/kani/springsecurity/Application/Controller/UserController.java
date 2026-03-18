@@ -8,8 +8,10 @@ import kani.springsecurity.Domain.Users.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +25,9 @@ public class UserController {
     private final UserMapper mapper;
 
         @PostMapping("/201")
-        public ResponseEntity<String> authVerifier(){
-        String message = "if you seen this you are authorized";
+        public ResponseEntity<UserDetails> authVerifier(){
 
-            return ResponseEntity.ok(message);
+
     }
 
     @GetMapping("/")
@@ -48,5 +49,15 @@ public class UserController {
         service.saveuser(mapper.ToEntity(users));
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+    @PutMapping("/{id}")
+    public  ResponseEntity<UserResponse> edituser(@RequestBody UserRequest request,@PathVariable Long id){
+        try{
+            Users user = mapper.ToEntity(request);
+            Users users = service.alterUser(id, user);
+            return ResponseEntity.ok(mapper.ToResponse(users));
+        }  catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
