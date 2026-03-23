@@ -24,12 +24,6 @@ public class UserController {
     private final UserService service;
     private final UserMapper mapper;
 
-        @PostMapping("/201")
-        public ResponseEntity<UserDetails> authVerifier(){
-
-
-    }
-
     @GetMapping("/")
     public ResponseEntity<List<UserResponse>> getall(){
         List<UserResponse> findall = service.findall().stream().map(mapper::ToResponse).toList();

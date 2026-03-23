@@ -29,8 +29,8 @@ public class SecurityConfig {
         return request.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(http -> http
                                 .requestMatchers(HttpMethod.POST,"/users/").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
-                                .requestMatchers(HttpMethod.PUT ,"/users/*").permitAll()
+                                .requestMatchers(HttpMethod.PUT ,"/users/**").permitAll()
+				 .requestMatchers(HttpMethod.GET,"/users/**").permitAll()
                                 .anyRequest().authenticated()
                         )
                 .httpBasic(Customizer.withDefaults())
