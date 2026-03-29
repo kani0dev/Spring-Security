@@ -20,6 +20,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository repo;
     private final PasswordEncoder encoder;
 
+
     public List<Users> findall(){
         return repo.findAll();
     }

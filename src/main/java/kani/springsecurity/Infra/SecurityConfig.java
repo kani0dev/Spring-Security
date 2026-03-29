@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,16 +31,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(http -> http
                                 .requestMatchers(HttpMethod.POST,"/users/").permitAll()
                                 .requestMatchers(HttpMethod.PUT ,"/users/**").permitAll()
-				 .requestMatchers(HttpMethod.GET,"/users/**").permitAll()
+				                .requestMatchers(HttpMethod.GET,"/users/**").permitAll()
                                 .anyRequest().authenticated()
                         )
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
-// o spring security n aceita objetos com senha em plain text por isso precisa do password enconder
+    // TODO: Implemente the sha256 algotithm for incryptation.
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
 }
