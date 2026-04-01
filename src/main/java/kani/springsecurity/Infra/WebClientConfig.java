@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
-
+/*
     @Value("${https://api.openai.com/v1/models}")
     private String ia_api;
 
@@ -15,4 +15,6 @@ public class WebClientConfig {
     public WebClient webClient(WebClient.Builder builder){
         return builder.baseUrl(ia_api).build();
     }
+*/
 }
+

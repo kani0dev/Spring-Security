@@ -2,6 +2,7 @@ package kani.springsecurity.Domain.Users.Service;
 
 import jakarta.annotation.Nullable;
 import kani.springsecurity.Domain.Users.Model.Profile;
+import kani.springsecurity.Domain.Users.Model.Role;
 import kani.springsecurity.Domain.Users.Model.Users;
 import kani.springsecurity.Domain.Users.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,7 @@ public class UserService implements UserDetailsService {
                 .build();
 
         request.setThisuserprofile(initial_empty_profile);
+
         repo.save(request);
     }
 
@@ -60,7 +62,7 @@ public class UserService implements UserDetailsService {
             var user = byUsername.get();
             return User.withUsername(user
                     .getUsername())
-                    .roles("USER")
+                    .roles(String.valueOf(user.getAuthorities()))
                     .password(user.getPassword())
                     .build();
         }
@@ -81,4 +83,15 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException(e);
         }
     }
+
+    public void deleteUser(Long id) throws Exception{
+        try {
+            findById(id);
+            repo.deleteById(id);
+
+        }catch (Exception e ){
+            throw new Exception("usuario nao encontrado");
+        }
+    }
+
 }

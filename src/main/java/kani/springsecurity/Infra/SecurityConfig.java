@@ -29,7 +29,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity request){
         return request.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(http -> http
-                                .anyRequest().permitAll()
+                                .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET).permitAll()
+                        //  permiti posts em user para criar usuarios nao é boa pratica e deve ser refatora para logica de login e singup
+                                .requestMatchers(HttpMethod.POST, "/users/").permitAll()
+                                .anyRequest().authenticated()
                         )
                 .httpBasic(Customizer.withDefaults())
                 .build();

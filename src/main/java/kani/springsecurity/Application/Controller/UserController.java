@@ -27,17 +27,18 @@ public class UserController {
     private final UserMapper mapper;
 
     @GetMapping("/")
+    /*
     public ResponseEntity<List<UserResponse>> getall(){
         List<UserResponse> findall = service.findall().stream().map(mapper::ToResponse).toList();
         return ResponseEntity.ok(findall);
     }
-
-    /*
+    */
     public ResponseEntity<List<Users>> getall(){
+
         List<Users> findall = service.findall();
         return ResponseEntity.ok(findall);
     }
-    */
+
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getbyid(@PathVariable Long id) throws Exception {
@@ -66,6 +67,16 @@ public class UserController {
         }  catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removeUser(@PathVariable Long id) throws Exception {
+        /*
+        service.deleteUser(id);
+        PfService.deleteProfile(id);
+        */
+        System.out.println("funciona plmds");
+        return ResponseEntity.ok().build();
     }
 
     // User Profile operations
