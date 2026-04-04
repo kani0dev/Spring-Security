@@ -1,8 +1,13 @@
-package kani.springsecurity.Domain.Users.Model;
+package kani.springsecurity.Domain.Profile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import kani.springsecurity.Domain.Tags.Tag;
+import kani.springsecurity.Domain.Users.Users;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_profiles")
@@ -29,5 +34,14 @@ public class Profile {
     private String magicPlace;
 
     private Integer age;
+
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(
+            name = "profile_tags",
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
 
 }

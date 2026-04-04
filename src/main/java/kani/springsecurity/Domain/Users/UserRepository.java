@@ -1,8 +1,6 @@
-package kani.springsecurity.Domain.Users.Repository;
+package kani.springsecurity.Domain.Users;
 
-import kani.springsecurity.Domain.Users.Model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 

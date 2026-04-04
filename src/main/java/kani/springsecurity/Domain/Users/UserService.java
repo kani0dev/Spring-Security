@@ -1,10 +1,6 @@
-package kani.springsecurity.Domain.Users.Service;
+package kani.springsecurity.Domain.Users;
 
-import jakarta.annotation.Nullable;
-import kani.springsecurity.Domain.Users.Model.Profile;
-import kani.springsecurity.Domain.Users.Model.Role;
-import kani.springsecurity.Domain.Users.Model.Users;
-import kani.springsecurity.Domain.Users.Repository.UserRepository;
+import kani.springsecurity.Domain.Profile.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,6 +44,7 @@ public class UserService implements UserDetailsService {
                 .favoriteAnimal("")
                 .magicPlace("")
                 .age(null)
+                .tags(null)
                 .build();
 
         request.setThisuserprofile(initial_empty_profile);

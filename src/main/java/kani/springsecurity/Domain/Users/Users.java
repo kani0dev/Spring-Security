@@ -1,7 +1,7 @@
-package kani.springsecurity.Domain.Users.Model;
+package kani.springsecurity.Domain.Users;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import kani.springsecurity.Domain.Profile.Profile;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

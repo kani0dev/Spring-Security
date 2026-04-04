@@ -1,9 +1,8 @@
 package kani.springsecurity.Application.Mapper;
 
-import jakarta.persistence.GeneratedValue;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
 import kani.springsecurity.Application.Controller.Response.UserResponse;
-import kani.springsecurity.Domain.Users.Model.Users;
+import kani.springsecurity.Domain.Users.Users;
 import lombok.Builder;
 import org.springframework.stereotype.Component;
 

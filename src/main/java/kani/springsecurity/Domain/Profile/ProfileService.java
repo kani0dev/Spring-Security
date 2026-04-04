@@ -1,11 +1,7 @@
-package kani.springsecurity.Domain.Users.Service;
+package kani.springsecurity.Domain.Profile;
 
-import kani.springsecurity.Domain.Users.Model.Profile;
-import kani.springsecurity.Domain.Users.Repository.ProfileRepository;
-import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Executable;
 import java.util.Optional;
 
 @Service

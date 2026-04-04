@@ -1,24 +1,24 @@
 spring:
   application:
     name: Spring-Security
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/spring_security
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: validate
-
   flyway:
     locations: classpath:db/migration
     enabled: true
+
+
 api:
     key:  ${API_KEY}
     url:  'https://api:anthropic:com/v1/messages'
+
 logging:
   level:
     org:

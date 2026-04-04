@@ -1,6 +1,6 @@
 package kani.springsecurity.Application.Controller.Response;
 
-import kani.springsecurity.Domain.Users.Model.Profile;
+import kani.springsecurity.Domain.Profile.Profile;
 import lombok.Builder;
 
 @Builder
