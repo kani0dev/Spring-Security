@@ -23,16 +23,17 @@ public class UserController {
     private final UserMapper mapper;
 
 
-
-
     @GetMapping("/")
-
     public ResponseEntity<List<UserResponse>> getall(){
         List<UserResponse> findall = service.findall().stream().map(mapper::ToResponse).toList();
         return ResponseEntity.ok(findall);
     }
 
-
+    @GetMapping("/dev")
+    public ResponseEntity<List<Users>> getallusedetails(){
+        List<Users> findall = service.findall();
+        return ResponseEntity.ok(findall);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getbyid(@PathVariable Long id) throws Exception {
         try{
@@ -62,15 +63,13 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeUser(@PathVariable Long id, Authentication auth) throws Exception {
-        /*
         service.deleteUser(id);
         PfService.deleteProfile(id);
-        */
-        System.out.println("sou adm eu +"+auth.getName());
         return ResponseEntity.ok().build();
     }
 
-    // User Profile operations
+    // User Profile operations -------------------------------------
+    // the profile is iniciated at the moment that a user is created.
     private  final ProfileService PfService;
 
     @GetMapping("/profile/{id}")
