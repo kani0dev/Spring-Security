@@ -1,5 +1,7 @@
 package kani.springsecurity.Domain.Profile;
 
+import kani.springsecurity.Domain.Tags.Tag;
+import kani.springsecurity.Domain.Tags.TagRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -7,9 +9,11 @@ import java.util.Optional;
 @Service
 public class ProfileService {
     private final ProfileRepository repo;
+    private final TagRepository tagrepo;
 
-    public ProfileService(ProfileRepository repo) {
+    public ProfileService(ProfileRepository repo, TagRepository tagrepo) {
         this.repo = repo;
+        this.tagrepo = tagrepo;
     }
 
     public Profile findById(long id) throws Exception {
@@ -35,6 +39,19 @@ public class ProfileService {
         try{
             findById(id);
             repo.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Profile addTagToProfile(Profile request, String tag){
+        try {
+            Optional<Tag> byName = tagrepo.findByNome(tag);
+            byName.ifPresent(request::addTagToProfile);
+
+            return repo.save(request);
+
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

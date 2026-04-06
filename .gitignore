@@ -1,7 +1,6 @@
 HELP.md
-CLAUDE.md
-Documentation/
-Documentation/*
+./Documentation/
+.env
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

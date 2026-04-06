@@ -8,6 +8,7 @@ import kani.springsecurity.Domain.Users.Users;
 import kani.springsecurity.Domain.Profile.ProfileService;
 import kani.springsecurity.Domain.Users.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -72,18 +73,31 @@ public class UserController {
     // the profile is iniciated at the moment that a user is created.
     private  final ProfileService PfService;
 
-    @GetMapping("/profile/{id}")
-    public ResponseEntity<Profile> GetUserProfile(@PathVariable Long id) throws Exception {
-        try{
-            Profile byId = PfService.findById(id);
-            return ResponseEntity.ok(byId);
-        }catch (Exception e){
-            return ResponseEntity.notFound().build();
-        }
-    }
+
 
     @PutMapping("/profile/{id}")
     public ResponseEntity<Profile> PutUserPRofile(@PathVariable Long id, @RequestBody Profile request) throws Exception {
-        return ResponseEntity.ok(PfService.alterProfile(id,request));
+        try{
+            return ResponseEntity.ok(PfService.alterProfile(id,request));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<Profile> getProfileByid(@PathVariable Long id){
+        try{
+            Profile byId = PfService.findById(id);
+            return ResponseEntity.ok(byId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("/profile/{id}/tags")
+    public ResponseEntity<Profile> addTag(String tag,@PathVariable Long id) throws Exception {
+        Profile profileByid = PfService.findById(id);
+        PfService.addTagToProfile(profileByid,tag);
+        return ResponseEntity.ok().build();
     }
 }

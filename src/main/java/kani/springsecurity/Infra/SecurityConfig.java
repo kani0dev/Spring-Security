@@ -32,11 +32,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(http -> http
-                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET).permitAll()
+                               // .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                                //.requestMatchers(HttpMethod.GET).permitAll()
                         //  permiti posts em user para criar usuarios nao é boa pratica e deve ser refatora para logica de login e singup
-                                .requestMatchers(HttpMethod.POST, "/users/").permitAll()
-                                .anyRequest().authenticated()
+                                //.requestMatchers(HttpMethod.POST, "/users/").permitAll()
+                                .anyRequest().permitAll()
                         )
                 .httpBasic(Customizer.withDefaults())
                 .build();

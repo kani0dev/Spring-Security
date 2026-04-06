@@ -36,7 +36,6 @@ public class Profile {
     private Integer age;
 
     @ManyToMany
-    @JsonIgnore
     @JoinTable(
             name = "profile_tags",
             joinColumns = @JoinColumn(name = "profile_id"),
@@ -44,4 +43,21 @@ public class Profile {
     )
     private Set<Tag> tags = new HashSet<>();
 
+    public Set<Tag> thisProfileTags(){
+        return this.getTags();
+    }
+    public Set<Tag> addTagToProfile(Tag tag){
+        if (tags.contains(tag)){
+            return null;
+        }
+        tags.add(tag);
+        return tags;
+    }
+    public Set<Tag> rmTagFromProfile(Tag tag){
+        if (tags.contains(tag)){
+            return null;
+        }
+        tags.add(tag);
+        return tags;
+    }
 }
