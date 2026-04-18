@@ -1,6 +1,7 @@
 package kani.springsecurity.Application.Controller;
 
 import kani.springsecurity.Application.Controller.Request.UserRequest;
+import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Application.Controller.Response.UserResponse;
 import kani.springsecurity.Application.Mapper.UserMapper;
 import kani.springsecurity.Domain.Profile.Profile;
@@ -85,10 +86,11 @@ public class UserController {
         }
     }
     @GetMapping("/profile/{id}")
-    public ResponseEntity<Profile> getProfileByid(@PathVariable Long id){
+    public ResponseEntity<ProfileResponse> getProfileByid(@PathVariable Long id){
         try{
             Profile byId = PfService.findById(id);
-            return ResponseEntity.ok(byId);
+            ProfileResponse profileResponse = ProfileResponse.ToEntity(byId);
+            return ResponseEntity.ok(profileResponse);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
