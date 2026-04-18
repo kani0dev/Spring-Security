@@ -27,13 +27,13 @@ public class Profile {
     @Column(length = 256)
     private String bio;
 
-    @Column(name = "favorite_animal", length = 256)
-    private String favoriteAnimal;
+    @Column(name = "location")
+    private String location;
 
-    @Column(name = "magic_place", length = 256)
-    private String magicPlace;
+    @Column(name = "occupation")
+    private String ocupation;
 
-    private Integer age;
+    private String interests;
 
     @ManyToMany
     @JoinTable(

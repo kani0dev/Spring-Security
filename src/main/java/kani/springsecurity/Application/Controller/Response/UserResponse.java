@@ -6,7 +6,6 @@ import lombok.Builder;
 @Builder
 public record UserResponse(
         String username,
-        Long id,
-        Profile profile
+        ProfileResponse profile
         ){
 }

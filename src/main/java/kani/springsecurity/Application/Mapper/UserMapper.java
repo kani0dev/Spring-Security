@@ -1,6 +1,7 @@
 package kani.springsecurity.Application.Mapper;
 
 import kani.springsecurity.Application.Controller.Request.UserRequest;
+import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Application.Controller.Response.UserResponse;
 import kani.springsecurity.Domain.Users.Users;
 import lombok.Builder;
@@ -17,16 +18,14 @@ public class UserMapper{
     }
     public Users ToEntity(UserResponse response){
         return Users.builder()
-                .id(response.id())
                 .username(response.username())
                 .build();
     }
 
     public UserResponse ToResponse(Users entity){
         return UserResponse.builder()
-                .id(entity.getId())
                 .username(entity.getUsername())
-                .profile(entity.getThisuserprofile())
+                .profile(ProfileResponse.ToEntity(entity.getThisuserprofile()))
                 .build();
     }
 

@@ -9,18 +9,18 @@ import java.util.Set;
 @Builder
 public record ProfileResponse(
         String bio,
-        String favoriteAnimal,
-        String magicPlace,
-        Integer age,
+        String location,
+        String occupation,
+        String interests,
         Set<Tag> tags
 ) {
 
     public static ProfileResponse ToEntity(Profile response){
         return ProfileResponse.builder()
                 .bio(response.getBio())
-                .favoriteAnimal(response.getFavoriteAnimal())
-                .magicPlace(response.getMagicPlace())
-                .age(response.getAge())
+                .location(response.getLocation())
+                .occupation(response.getOcupation())
+                .interests(response.getInterests())
                 .tags(response.getTags())
                 .build();
 

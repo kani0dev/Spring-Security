@@ -41,9 +41,9 @@ public class UserService implements UserDetailsService {
                 .userId(request.getId())
                 .user(request)
                 .bio("")
-                .favoriteAnimal("")
-                .magicPlace("")
-                .age(null)
+                .location("")
+                .ocupation("")
+                .interests("")
                 .tags(null)
                 .build();
 
