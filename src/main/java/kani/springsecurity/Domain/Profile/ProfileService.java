@@ -3,21 +3,17 @@ package kani.springsecurity.Domain.Profile;
 import kani.springsecurity.Application.Controller.Request.ProfileRequest;
 import kani.springsecurity.Domain.Tags.Tag;
 import kani.springsecurity.Domain.Tags.TagRepository;
-import org.springframework.security.core.userdetails.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProfileService {
     private final ProfileRepository repo;
     private final TagRepository tagrepo;
-
-    public ProfileService(ProfileRepository repo, TagRepository tagrepo) {
-        this.repo = repo;
-        this.tagrepo = tagrepo;
-    }
 
     public Profile findById(long id) throws Exception {
         Optional<Profile> byId = repo.findById(id);

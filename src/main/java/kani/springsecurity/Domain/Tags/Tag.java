@@ -1,17 +1,14 @@
 package kani.springsecurity.Domain.Tags;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tag")
+@Getter @Setter
 public class Tag {
 
     @Id
@@ -20,8 +17,5 @@ public class Tag {
     private String nome;
     private String category;
 
-    public Tag(String name, String category){
-        this.setNome(name);
-        this.setCategory(category);
-    }
+
 }
