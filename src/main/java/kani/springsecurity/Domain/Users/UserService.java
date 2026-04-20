@@ -1,5 +1,7 @@
 package kani.springsecurity.Domain.Users;
 
+import jakarta.transaction.Transactional;
+import kani.springsecurity.Application.Controller.Request.UserRequest;
 import kani.springsecurity.Domain.Profile.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -68,25 +70,29 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public Users alterUser(Long id, Users request) throws RuntimeException {
+    @Transactional
+    public Users alterUser(Long id, UserRequest request) throws RuntimeException {
         try{
-            findById(id);
-            Users byId;
-            byId = request;
-            byId.setId(id);
-            byId.setPassword(encoder.encode(request.getPassword()));
+            var oldUser = findById(id);
+            Users newUser = Users.builder()
+                    .id(oldUser.getId())
+                    .password(encoder.encode(request.password()))
+                    .username(request.username())
+                    .role(oldUser.getRole())
+                    .thisuserprofile(oldUser.getThisuserprofile())
+                    .build();
 
-            return repo.save(byId);
+            return repo.save(newUser);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Transactional
     public void deleteUser(Long id) throws Exception{
         try {
             findById(id);
             repo.deleteById(id);
-
         }catch (Exception e ){
             throw new Exception("usuario nao encontrado");
         }

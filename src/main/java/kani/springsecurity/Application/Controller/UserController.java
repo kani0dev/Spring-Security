@@ -24,7 +24,7 @@ import java.util.List;
 public class UserController {
     private final UserService service;
     private final UserMapper mapper;
-
+    private  final ProfileService PfService;
 
     @GetMapping("/")
     public ResponseEntity<List<UserResponse>> getall(){
@@ -32,11 +32,6 @@ public class UserController {
         return ResponseEntity.ok(findall);
     }
 
-    @GetMapping("/dev")
-    public ResponseEntity<List<Users>> getallusedetails(){
-        List<Users> findall = service.findall();
-        return ResponseEntity.ok(findall);
-    }
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getbyid(@PathVariable Long id) throws Exception {
         try{
@@ -56,9 +51,8 @@ public class UserController {
     @PutMapping("/{id}")
     public  ResponseEntity<UserResponse> edituser(@RequestBody UserRequest request,@PathVariable Long id){
         try{
-            Users user = mapper.ToEntity(request);
-            Users users = service.alterUser(id, user);
-            return ResponseEntity.ok(mapper.ToResponse(users));
+            Users user = service.alterUser(id, request);
+            return ResponseEntity.ok(UserResponse.ToResponse(user));
         }  catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
@@ -73,7 +67,6 @@ public class UserController {
 
     // User Profile operations -------------------------------------
     // the profile is iniciated at the moment that a user is created.
-    private  final ProfileService PfService;
 
 
 
