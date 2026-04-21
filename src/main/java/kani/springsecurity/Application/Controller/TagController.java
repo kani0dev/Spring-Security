@@ -28,13 +28,12 @@ public class TagController {
 
     @PostMapping("/{id}")
     public ResponseEntity<?> addATagToProfile(@PathVariable Long id,@RequestBody TagRequest request) throws Exception {
-        System.out.println(request);
-    try {
-        Profile profileWithAddedTag = service.addTagToProfile(id, request);
-        return  ResponseEntity.ok(ProfileResponse.ToResponse(profileWithAddedTag));
-    }catch (Exception e ){
-        System.out.println(e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    }
+        try {
+            Profile profileWithAddedTag = service.addTagToProfile(id, request);
+            return  ResponseEntity.ok(ProfileResponse.ToResponse(profileWithAddedTag));
+        }catch (Exception e ){
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }
