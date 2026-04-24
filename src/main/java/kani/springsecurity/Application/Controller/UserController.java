@@ -1,9 +1,12 @@
 package kani.springsecurity.Application.Controller;
 
+import kani.springsecurity.Application.Controller.Request.ProfileRequest;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
+import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Application.Controller.Response.UserResponse;
 import kani.springsecurity.Application.Mapper.UserMapper;
 import kani.springsecurity.Domain.Profile.Profile;
+import kani.springsecurity.Domain.Tags.TagService;
 import kani.springsecurity.Domain.Users.Users;
 import kani.springsecurity.Domain.Profile.ProfileService;
 import kani.springsecurity.Domain.Users.UserService;
@@ -15,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -22,7 +26,8 @@ import java.util.List;
 public class UserController {
     private final UserService service;
     private final UserMapper mapper;
-
+    private  final ProfileService PfService;
+    private final TagService TAGservice;
 
     @GetMapping("/")
     public ResponseEntity<List<UserResponse>> getall(){
@@ -30,11 +35,6 @@ public class UserController {
         return ResponseEntity.ok(findall);
     }
 
-    @GetMapping("/dev")
-    public ResponseEntity<List<Users>> getallusedetails(){
-        List<Users> findall = service.findall();
-        return ResponseEntity.ok(findall);
-    }
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getbyid(@PathVariable Long id) throws Exception {
         try{
@@ -54,9 +54,8 @@ public class UserController {
     @PutMapping("/{id}")
     public  ResponseEntity<UserResponse> edituser(@RequestBody UserRequest request,@PathVariable Long id){
         try{
-            Users user = mapper.ToEntity(request);
-            Users users = service.alterUser(id, user);
-            return ResponseEntity.ok(mapper.ToResponse(users));
+            Users user = service.alterUser(id, request);
+            return ResponseEntity.ok(UserResponse.ToResponse(user));
         }  catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
@@ -71,33 +70,28 @@ public class UserController {
 
     // User Profile operations -------------------------------------
     // the profile is iniciated at the moment that a user is created.
-    private  final ProfileService PfService;
 
 
 
     @PutMapping("/profile/{id}")
-    public ResponseEntity<Profile> PutUserPRofile(@PathVariable Long id, @RequestBody Profile request) throws Exception {
+    public ResponseEntity<ProfileResponse> PutUserPRofile(@PathVariable Long id, @RequestBody ProfileRequest request) throws Exception {
         try{
-            return ResponseEntity.ok(PfService.alterProfile(id,request));
-
+            Profile profile = PfService.alterProfile(id, request);
+            return ResponseEntity.ok(ProfileResponse.ToResponse(profile));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/profile/{id}")
-    public ResponseEntity<Profile> getProfileByid(@PathVariable Long id){
+    public ResponseEntity<ProfileResponse> getProfileByid(@PathVariable Long id){
         try{
             Profile byId = PfService.findById(id);
-            return ResponseEntity.ok(byId);
+            ProfileResponse profileResponse = ProfileResponse.ToResponse(byId);
+
+            return ResponseEntity.ok(profileResponse);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @PostMapping("/profile/{id}/tags")
-    public ResponseEntity<Profile> addTag(String tag,@PathVariable Long id) throws Exception {
-        Profile profileByid = PfService.findById(id);
-        PfService.addTagToProfile(profileByid,tag);
-        return ResponseEntity.ok().build();
     }
 }

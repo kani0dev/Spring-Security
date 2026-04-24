@@ -1,9 +1,15 @@
 package kani.springsecurity.Domain.Tags;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface TagRepository extends JpaRepository<Tag,Long> {
-   Optional<Tag> findByNome(String tag);
+
+    Optional<Tag> findByNome(String tag);
+
+    List<Tag> findByCategoryAndNomeContaining(String category,String nome);
 }

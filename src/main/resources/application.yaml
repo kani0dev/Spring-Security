@@ -27,4 +27,8 @@ logging:
     org:
       springframework:
         security: DEBUG
-        web : DEBUG
+        web:
+          reactive:
+            function:
+              client:
+                ExchangeFunctions: DEBUG
