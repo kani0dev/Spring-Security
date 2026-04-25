@@ -5,7 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Array;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
+import java.sql.SQLType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,5 +29,7 @@ public class Embeding {
     private Long user_id;
 
     @Column(columnDefinition = "vector(1536)")
+    @JdbcTypeCode(SqlTypes.VECTOR)
+        @Array(length = 1536)
     private float[] embedding ;
 }
