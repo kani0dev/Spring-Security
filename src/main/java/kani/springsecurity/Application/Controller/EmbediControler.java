@@ -9,10 +9,7 @@ import kani.springsecurity.Domain.Profile.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.data.metrics.DefaultRepositoryTagsProvider;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -41,4 +38,13 @@ public class EmbediControler {
                  ).subscribeOn(Schedulers.boundedElastic())
                  .map(ResponseEntity::ok);
     }
+    @GetMapping()
+    public ResponseEntity<?> findAllEmbedingsFromDB(){
+        return ResponseEntity.ok(
+                service.getAll()
+        );
+    }
+
 }
+
+

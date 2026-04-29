@@ -7,10 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class EmbedingService {
     private final WebClient client;
+    private final EmbedingRepository repo;
 
     public Mono<EmbedingResponse> getEmbeding(Long id, ProfileResponse profile) {
         return client.post()
@@ -19,5 +22,9 @@ public class EmbedingService {
                 .bodyValue(profile)
                 .retrieve()
                 .bodyToMono(EmbedingResponse.class);
+    }
+
+    public List<Embeding> getAll() {
+    return repo.findAll();
     }
 }
