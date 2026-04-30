@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Builder
 public record ProfileResponse(
+        Long user_id,
         String bio,
         String location,
         String occupation,
@@ -21,6 +22,7 @@ public record ProfileResponse(
     public static ProfileResponse ToResponse(Profile response){
 
         return ProfileResponse.builder()
+                .user_id(response.getUserId())
                 .bio(response.getBio())
                 .location(response.getLocation())
                 .occupation(response.getOcupation())
@@ -31,6 +33,5 @@ public record ProfileResponse(
                         Collectors.mapping(Tag::getNome, Collectors.toList())
                 )))
                 .build();
-
     }
 }

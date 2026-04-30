@@ -24,8 +24,7 @@ public class EmbediControler {
 
     @PostMapping("/{id}")
     public Mono<ResponseEntity<Embeding>> getProfileEmbeding(@PathVariable Long id ) throws Exception {
-        Profile byId = PfService.findById(id);
-        ProfileResponse profile = ProfileResponse.ToResponse(byId);
+        ProfileResponse profile  = ProfileResponse.ToResponse(PfService.findById(id));
 
          return service.getEmbeding(id, profile)
                  .map(response -> Embeding.builder()
