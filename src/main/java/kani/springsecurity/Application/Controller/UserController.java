@@ -51,48 +51,36 @@ public class UserController {
 
     @PostMapping("")
     public ResponseEntity createFullUser(@RequestBody FullUserRequest request) {
-        FullUserRequest emptyRequestExemple = FullUserRequest.builder()
-                    .user(UserRequest.builder()
-                            .username("")
-                            .password("")
-                            .build()
-                    )
-                    .profile(ProfileRequest.builder()
-                            .bio("")
-                            .location("")
-                            .occupation("")
-                            .interests("")
-                            .tags(
-                                    Set.of(Tag.builder()
-                                            .nome("")
-                                            .category("")
-                                            .build())
-                            )
-                            .build()
-                    )
-                .build();
+        FullUserRequest emptyRequestExemple = FullUserRequest.EmptyExemple();
+        System.out.println(request.tags());
+        var fds = FullUserRequest.Build(request);
+
+        PfService.saveProfile((Profile) fds.get("profile"));
+
+        return ResponseEntity.ok(fds);
+        /*
         try {
-            Users savedUser = service.saveuser(
-                    UserRequest.ToEntity(request.user())
-            );
-            PfService.saveProfile(
-                    ProfileRequest.ToEntity(request.profile())
-            );
-            return ResponseEntity.ok(
-                    UserResponse.ToResponse(savedUser)
-            );
+
+
+            return ResponseEntity.ok(();
         } catch (AlreadyExist e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
         } catch (EmptyProfile e) {
+            System.out.println(e.getMessage());
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     "Empty profile try re-writing the profile\n"+
                     emptyRequestExemple
             );
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     "Request Body is not right heres a exemple:\n"+
-                    emptyRequestExemple);
-        }
+                    emptyRequestExemple
+            );
+        }*/
     }
     /*
         user can be created as a detached user that won't have a profile, I think this type of profile can be used for

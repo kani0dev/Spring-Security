@@ -12,7 +12,7 @@ public record UserRequest(
     public static Users ToEntity(
             UserRequest request
     ){
-        return (Users) User.builder()
+        return Users.builder()
                 .username(request.username())
                 .password(request.password())
                 .build();

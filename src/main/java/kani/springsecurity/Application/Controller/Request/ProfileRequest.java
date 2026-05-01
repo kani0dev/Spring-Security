@@ -7,6 +7,7 @@ import kani.springsecurity.Domain.Users.Users;
 import lombok.Builder;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Builder
@@ -15,17 +16,19 @@ public record ProfileRequest(
         String location,
         String occupation,
         String interests,
-        Set<Tag> tags
+        Set<TagRequest> tags
         ) {
     public static UserRepository repo ;
 
     public static Profile ToEntity(ProfileRequest request){
+        Set<Tag> processedTags = request.tags().stream().map(TagRequest::ToEntity).collect(Collectors.toSet());
+        System.out.println(processedTags);
         return Profile.builder()
                 .bio(request.bio())
                 .location(request.location())
                 .ocupation(request.occupation())
                 .interests(request.interests())
-                .tags(request.tags())
+                .tags(processedTags)
                 .build();
     }
     public static Profile ToEntityWithUser(ProfileRequest request, Users user){
@@ -36,7 +39,10 @@ public record ProfileRequest(
                 .location(request.location())
                 .ocupation(request.occupation())
                 .interests(request.interests())
-                .tags(request.tags())
+                .tags(
+                        request.tags().stream()
+                                .map(TagRequest::ToEntity).collect(Collectors.toSet())
+                )
                 .build();
     }
 }

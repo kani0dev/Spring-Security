@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
         throw  new RuntimeException("Id nao econtrado");
     }
 
-    public Users saveuser(Users request) throws Exception{
+    public Users saveuser(Users request) {
         if(repo.findByUsername(request.getUsername()).isPresent()){
             throw new AlreadyExist("user already in exists");
         }

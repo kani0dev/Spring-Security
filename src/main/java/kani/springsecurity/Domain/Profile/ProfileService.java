@@ -36,7 +36,7 @@ public class ProfileService {
             if (byId.isPresent()){
                 Profile altered = Profile.builder()
                         .user(byId.get().getUser())
-                        .userId(request.userId())
+                        .userId(id)
                         .bio(request.bio())
                         .location(request.location())
                         .ocupation(request.occupation())
@@ -60,7 +60,7 @@ public class ProfileService {
             throw new RuntimeException(e);
         }
     }
-    public void saveProfile(Profile profile) {
+    public Profile saveProfile(Profile profile) {
         if (repo.existsById(profile.getUserId())){throw new AlreadyExist("Profile already exists");}
 
         if (profile.isEmpty(profile) ==true ){throw new EmptyProfile("can't save a empty profile");}
@@ -69,5 +69,6 @@ public class ProfileService {
         publisher.publishEvent(
                 SendSavedProfileToEmbedding.builder().build()
         );
+        return  save;
     }
 }
