@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.User;
 public record UserRequest(
         String username,
         String password) {
-    public Users ToEntity(
+    public static Users ToEntity(
             UserRequest request
     ){
-        return (Users) User.builder()
+        return Users.builder()
                 .username(request.username())
                 .password(request.password())
                 .build();

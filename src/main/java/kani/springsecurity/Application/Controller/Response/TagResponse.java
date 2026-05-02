@@ -11,8 +11,9 @@ import java.util.stream.Collectors;
 
 @Builder
 public record TagResponse(
-        String tag,
-        String category
+        String tag
 ) {
-
+    public static TagResponse ToResponse(Tag tag){
+        return TagResponse.builder().tag(tag.getNome()).build();
+    }
 }

@@ -4,14 +4,11 @@ import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Domain.Embeding.Embeding;
 import kani.springsecurity.Domain.Embeding.EmbedingRepository;
 import kani.springsecurity.Domain.Embeding.EmbedingService;
-import kani.springsecurity.Domain.Profile.Profile;
 import kani.springsecurity.Domain.Profile.ProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.data.metrics.DefaultRepositoryTagsProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 @RestController
@@ -22,10 +19,13 @@ public class EmbediControler {
     private final EmbedingService service;
     private final EmbedingRepository repo;
 
+    /*
+    -------- when profile is save, a event is sent to the embedding model HOWEVER if the embeding fail
+    when creating a profile, this endpoint serv as a manual retrial for the users
+    */
     @PostMapping("/{id}")
     public Mono<ResponseEntity<Embeding>> getProfileEmbeding(@PathVariable Long id ) throws Exception {
-        Profile byId = PfService.findById(id);
-        ProfileResponse profile = ProfileResponse.ToResponse(byId);
+        ProfileResponse profile  = ProfileResponse.ToResponse(PfService.findById(id));
 
          return service.getEmbeding(id, profile)
                  .map(response -> Embeding.builder()
@@ -38,6 +38,7 @@ public class EmbediControler {
                  ).subscribeOn(Schedulers.boundedElastic())
                  .map(ResponseEntity::ok);
     }
+
     @GetMapping()
     public ResponseEntity<?> findAllEmbedingsFromDB(){
         return ResponseEntity.ok(

@@ -24,7 +24,7 @@ public class Profile {
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId@JoinColumn(name = "user_id")
-    private Users user;
+    private Users user ;
 
     @Column(length = 256)
     private String bio;
@@ -61,5 +61,13 @@ public class Profile {
         }
         tags.add(tag);
         return tags;
+    }
+
+    public Boolean isEmpty(Profile profile){
+        return (bio == null || bio.isBlank()) &&
+                (location == null || location.isBlank()) &&
+                (ocupation == null || ocupation.isBlank()) &&
+                (interests == null || interests.isBlank()) &&
+                (tags == null || tags.isEmpty());
     }
 }

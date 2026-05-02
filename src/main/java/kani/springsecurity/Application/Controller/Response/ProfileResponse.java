@@ -12,25 +12,24 @@ import java.util.stream.Collectors;
 
 @Builder
 public record ProfileResponse(
+        Long user_id,
         String bio,
         String location,
         String occupation,
         String interests,
-        Map<String, List<String>> tags
+        Set<TagResponse> tags
 ) {
     public static ProfileResponse ToResponse(Profile response){
 
         return ProfileResponse.builder()
+                .user_id(response.getUserId())
                 .bio(response.getBio())
                 .location(response.getLocation())
                 .occupation(response.getOcupation())
                 .interests(response.getInterests())
-                .tags(response.getTags().stream().collect(Collectors.groupingBy(
-                        Tag::getCategory,
-                        LinkedHashMap::new,
-                        Collectors.mapping(Tag::getNome, Collectors.toList())
-                )))
+                .tags(
+                        response.getTags().stream().map(TagResponse::ToResponse).collect(Collectors.toSet())
+                )
                 .build();
-
     }
 }

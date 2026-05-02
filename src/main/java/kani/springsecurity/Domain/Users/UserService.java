@@ -2,8 +2,12 @@ package kani.springsecurity.Domain.Users;
 
 import jakarta.transaction.Transactional;
 import kani.springsecurity.Application.Controller.Request.UserRequest;
-import kani.springsecurity.Domain.Profile.Profile;
+import kani.springsecurity.Application.Controller.Response.ProfileResponse;
+import kani.springsecurity.Application.Events.SendSavedProfileToEmbedding;
+import kani.springsecurity.Application.Exceptions.AlreadyExist;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.apache.bcel.classfile.Module;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +23,7 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository repo;
     private final PasswordEncoder encoder;
-
+    private final ApplicationEventPublisher publisher;
 
     public List<Users> findall(){
         return repo.findAll();
@@ -33,25 +37,21 @@ public class UserService implements UserDetailsService {
         throw  new RuntimeException("Id nao econtrado");
     }
 
-    public void saveuser(Users request){
-        if(repo.findByUsername(request.getUsername()).isPresent()){
-            throw new RuntimeException("Usuario Já cadastrado");
+    public Users saveuser(Users request) {
+        Optional<Users> isUserPresent = repo.findByUsername(request.getUsername());
+        if(isUserPresent.isPresent()){
+            throw new AlreadyExist("user with this username already in exists");
         }
         request.setPassword(encoder.encode(request.getPassword()));
-
-        Profile initial_empty_profile = Profile.builder()
-                .userId(request.getId())
-                .user(request)
-                .bio("")
-                .location("")
-                .ocupation("")
-                .interests("")
-                .tags(null)
-                .build();
-
-        request.setThisuserprofile(initial_empty_profile);
         request.setRole(Role.USER);
-        repo.save(request);
+
+        Users saved = repo.save(request);
+        publisher.publishEvent(
+                SendSavedProfileToEmbedding.builder()
+                        .profileResponse(ProfileResponse.ToResponse(saved.thisuserprofile))
+                        .build()
+        );
+        return request;
     }
 
     @Override
