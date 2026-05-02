@@ -1,5 +1,6 @@
 package kani.springsecurity.Domain.Embeding;
 
+import kani.springsecurity.Application.Controller.Response.EmbedingResponse;
 import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Application.Events.SendSavedProfileToEmbedding;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +21,21 @@ public class EmbedingService {
 
     @Async
     @EventListener
-    public Mono<EmbedingResponse> EmbedSavedProfile(SendSavedProfileToEmbedding profileToEmbedding) {
+    public EmbedingResponse EmbedSavedProfile(SendSavedProfileToEmbedding profileToEmbedding) {
+        System.out.println("perfil que vai ser embedado " +profileToEmbedding);
         var profile = profileToEmbedding.profileResponse();
-        return client.post()
+
+        EmbedingResponse response = client.post()
                 .uri("/" + profile.user_id())
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(profile)
                 .retrieve()
-                .bodyToMono(EmbedingResponse.class);
+                .bodyToMono(EmbedingResponse.class)
+                .block();
+
+        assert response != null;
+        repo.save(EmbedingResponse.ToEntity(response));
+        return response;
     }
 
     public List<Embeding> getAll() {

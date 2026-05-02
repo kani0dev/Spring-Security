@@ -24,7 +24,7 @@ public class Profile {
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId@JoinColumn(name = "user_id")
-    private Users user;
+    private Users user ;
 
     @Column(length = 256)
     private String bio;

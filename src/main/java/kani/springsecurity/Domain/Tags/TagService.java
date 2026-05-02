@@ -35,11 +35,13 @@ public class TagService {
         return repo.findAll();
     }
 
-    public Long getTagId(String nome){
+    public Tag getTagId(String nome){
         Optional<Tag> byNome = repo.findByNome(nome);
 
         if (byNome.isPresent()){
-            return byNome.get().getId();
+            Long tagId = byNome.get().getId();
+            return Tag.builder()
+                    .id(tagId).nome(nome).build();
         }
         throw new RuntimeException("Tag nao encontrada");
     }

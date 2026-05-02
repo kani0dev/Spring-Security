@@ -1,12 +1,15 @@
 package kani.springsecurity.Domain.Profile;
 
 import kani.springsecurity.Application.Controller.Request.ProfileRequest;
+import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Application.Events.SendSavedProfileToEmbedding;
 import kani.springsecurity.Application.Exceptions.AlreadyExist;
 import kani.springsecurity.Application.Exceptions.EmptyProfile;
 import kani.springsecurity.Domain.Tags.Tag;
 import kani.springsecurity.Domain.Tags.TagRepository;
 import kani.springsecurity.Domain.Tags.TagService;
+import kani.springsecurity.Domain.Users.UserService;
+import kani.springsecurity.Domain.Users.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +22,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProfileService {
     private final ProfileRepository repo;
-    private final ApplicationEventPublisher publisher;
 
     public Profile findById(long id) throws Exception {
         Optional<Profile> byId = repo.findById(id);
@@ -60,15 +62,15 @@ public class ProfileService {
             throw new RuntimeException(e);
         }
     }
+    @Transactional
     public Profile saveProfile(Profile profile) {
-        if (repo.existsById(profile.getUserId())){throw new AlreadyExist("Profile already exists");}
-
-        if (profile.isEmpty(profile) ==true ){throw new EmptyProfile("can't save a empty profile");}
-
-        Profile save = repo.save(profile);
-        publisher.publishEvent(
-                SendSavedProfileToEmbedding.builder().build()
-        );
-        return  save;
+        if (repo.findById(profile.getUserId()).isPresent()) {
+            throw new AlreadyExist("Profile already exists");
+        }
+        if (profile.isEmpty(profile)) {
+            throw new EmptyProfile("can't save a empty profile");
+        }
+        Profile saved = repo.save(profile);
+        return saved;
     }
 }

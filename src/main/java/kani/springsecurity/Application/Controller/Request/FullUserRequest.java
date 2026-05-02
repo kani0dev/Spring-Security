@@ -34,7 +34,9 @@ public record FullUserRequest (
         UserRequest userReq = UserRequest.builder().username(request.username()).password(request.password()).build();
 
         Set<TagRequest> tagReq = request.tags.stream()
-                .map(tag -> TagRequest.builder().tag(tag).build())
+                .map(tag -> TagRequest.builder()
+                        .tag(tag)
+                        .build())
                 .collect(Collectors.toSet());
 
         ProfileRequest profileReq = ProfileRequest.builder().bio(request.bio()).location(request.location()).occupation(request.ocupation()).interests(request.interests())
