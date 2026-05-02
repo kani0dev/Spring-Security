@@ -68,7 +68,7 @@ public class UserController {
             user.setThisuserprofile(profile);
             Users saved = service.saveuser(user);
 
-            return ResponseEntity.ok(saved);
+            return ResponseEntity.ok(UserResponse.ToResponse(saved));
 
         } catch (AlreadyExist e) {
             System.out.println(e.getMessage());
