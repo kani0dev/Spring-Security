@@ -21,7 +21,7 @@ public record FullUserRequest (
         String location,
         String ocupation,
         String interests,
-        Set<TagRequest> tags
+        Set<String> tags
 
         ) {
 
@@ -33,8 +33,12 @@ public record FullUserRequest (
 
         UserRequest userReq = UserRequest.builder().username(request.username()).password(request.password()).build();
 
-        ProfileRequest profileReq = ProfileRequest.builder().bio(request.bio()).location(request.location()).occupation(request.ocupation()).interests(request.interests)
-                .tags(request.tags)
+        Set<TagRequest> tagReq = request.tags.stream()
+                .map(tag -> TagRequest.builder().tag(tag).build())
+                .collect(Collectors.toSet());
+
+        ProfileRequest profileReq = ProfileRequest.builder().bio(request.bio()).location(request.location()).occupation(request.ocupation()).interests(request.interests())
+                .tags(tagReq)
                 .build();
 
         return  Map.of(

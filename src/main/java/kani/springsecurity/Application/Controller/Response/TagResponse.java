@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 
 @Builder
 public record TagResponse(
-        String tag,
-        String category
+        String tag
 ) {
 
 }

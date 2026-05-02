@@ -51,6 +51,7 @@ public class UserController {
 
     @PostMapping("")
     public ResponseEntity createFullUser(@RequestBody FullUserRequest request) {
+        System.out.println("request :" + request +"\n");
         FullUserRequest emptyRequestExemple = FullUserRequest.EmptyExemple();
         System.out.println(request.tags());
         var fds = FullUserRequest.Build(request);

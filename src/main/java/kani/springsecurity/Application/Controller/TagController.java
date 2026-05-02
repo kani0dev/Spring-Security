@@ -3,6 +3,7 @@ package kani.springsecurity.Application.Controller;
 import kani.springsecurity.Application.Controller.Request.TagRequest;
 import kani.springsecurity.Application.Controller.Response.ProfileResponse;
 import kani.springsecurity.Domain.Profile.Profile;
+import kani.springsecurity.Domain.Tags.Tag;
 import kani.springsecurity.Domain.Tags.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
@@ -20,8 +21,8 @@ public class TagController {
     private final TagService service;
 
     @GetMapping("")
-    public ResponseEntity<Map<String, List<String>>> teste(){
-        Map<String, List<String>> stringListMap = service.getTagsByCategorie();
+    public ResponseEntity<List<Tag>> getAlltags(){
+        List<Tag> stringListMap = service.getAllTags();
         System.out.println(stringListMap);
         return  ResponseEntity.ok(stringListMap);
     }

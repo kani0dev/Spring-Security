@@ -17,7 +17,7 @@ public record ProfileResponse(
         String location,
         String occupation,
         String interests,
-        Map<String, List<String>> tags
+        Set<Tag> tags
 ) {
     public static ProfileResponse ToResponse(Profile response){
 
@@ -27,11 +27,7 @@ public record ProfileResponse(
                 .location(response.getLocation())
                 .occupation(response.getOcupation())
                 .interests(response.getInterests())
-                .tags(response.getTags().stream().collect(Collectors.groupingBy(
-                        Tag::getCategory,
-                        LinkedHashMap::new,
-                        Collectors.mapping(Tag::getNome, Collectors.toList())
-                )))
+                .tags(response.getTags())
                 .build();
     }
 }

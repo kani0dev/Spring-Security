@@ -21,17 +21,18 @@ public record ProfileRequest(
     public static UserRepository repo ;
 
     public static Profile ToEntity(ProfileRequest request){
-        Set<Tag> processedTags = request.tags().stream().map(TagRequest::ToEntity).collect(Collectors.toSet());
-        System.out.println(processedTags);
+
+        Set<Tag> requestTags = request.tags.stream().map(TagRequest::ToEntity).collect(Collectors.toSet());
         return Profile.builder()
                 .bio(request.bio())
                 .location(request.location())
                 .ocupation(request.occupation())
+                .tags(requestTags)
                 .interests(request.interests())
-                .tags(processedTags)
                 .build();
     }
     public static Profile ToEntityWithUser(ProfileRequest request, Users user){
+        Set<Tag> requestTags = request.tags.stream().map(TagRequest::ToEntity).collect(Collectors.toSet());
         return Profile.builder()
                 .user(user)
                 .userId(user.getId())
@@ -39,10 +40,7 @@ public record ProfileRequest(
                 .location(request.location())
                 .ocupation(request.occupation())
                 .interests(request.interests())
-                .tags(
-                        request.tags().stream()
-                                .map(TagRequest::ToEntity).collect(Collectors.toSet())
-                )
+                .tags(requestTags)
                 .build();
     }
 }
