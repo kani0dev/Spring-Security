@@ -8,6 +8,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -21,8 +23,7 @@ public class EmbedingService {
 
     @Async
     @EventListener
-    public EmbedingResponse EmbedSavedProfile(SendSavedProfileToEmbedding profileToEmbedding) {
-        System.out.println("perfil que vai ser embedado " +profileToEmbedding);
+    public void EmbedSavedProfile(SendSavedProfileToEmbedding profileToEmbedding) {
         var profile = profileToEmbedding.profileResponse();
 
         EmbedingResponse response = client.post()
@@ -34,8 +35,12 @@ public class EmbedingService {
                 .block();
 
         assert response != null;
-        repo.save(EmbedingResponse.ToEntity(response));
-        return response;
+        Embeding embeding = Embeding.builder()
+                .user_id(response.user_id())
+                .embedding(response.embedding())
+                .build();
+
+        repo.save(embeding);
     }
 
     public List<Embeding> getAll() {

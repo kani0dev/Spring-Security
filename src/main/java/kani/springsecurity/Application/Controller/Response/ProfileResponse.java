@@ -17,7 +17,7 @@ public record ProfileResponse(
         String location,
         String occupation,
         String interests,
-        Set<Tag> tags
+        Set<TagResponse> tags
 ) {
     public static ProfileResponse ToResponse(Profile response){
 
@@ -27,7 +27,9 @@ public record ProfileResponse(
                 .location(response.getLocation())
                 .occupation(response.getOcupation())
                 .interests(response.getInterests())
-                .tags(response.getTags())
+                .tags(
+                        response.getTags().stream().map(TagResponse::ToResponse).collect(Collectors.toSet())
+                )
                 .build();
     }
 }

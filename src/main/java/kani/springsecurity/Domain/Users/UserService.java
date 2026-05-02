@@ -46,7 +46,6 @@ public class UserService implements UserDetailsService {
         request.setRole(Role.USER);
 
         Users saved = repo.save(request);
-        System.out.println("perfil pra embeding: "+ saved.thisuserprofile.toString());
         publisher.publishEvent(
                 SendSavedProfileToEmbedding.builder()
                         .profileResponse(ProfileResponse.ToResponse(saved.thisuserprofile))

@@ -13,5 +13,7 @@ import java.util.stream.Collectors;
 public record TagResponse(
         String tag
 ) {
-
+    public static TagResponse ToResponse(Tag tag){
+        return TagResponse.builder().tag(tag.getNome()).build();
+    }
 }
